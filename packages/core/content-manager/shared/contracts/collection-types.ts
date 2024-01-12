@@ -1,5 +1,5 @@
 import { errors } from '@strapi/utils';
-import { Schema, Common, EntityService } from '@strapi/types';
+import { Schema, Common, EntityService, Entity as SEntity } from '@strapi/types';
 
 // Admin entity response follows the same format as the entity service
 type Entity = EntityService.Result<Common.UID.Schema>;
@@ -15,9 +15,9 @@ export declare namespace Find {
   export interface Request {
     body: {};
     query: {
-      page: PaginationQuery['page'];
-      pageSize: PaginationQuery['pageSize'];
-      sort: SortQuery;
+      page?: PaginationQuery['page'];
+      pageSize?: PaginationQuery['pageSize'];
+      sort?: SortQuery;
     };
   }
 
@@ -103,7 +103,7 @@ export declare namespace Clone {
 
   export interface Params {
     model: string;
-    sourceId: number;
+    sourceId: SEntity.ID;
   }
 
   export interface Response {

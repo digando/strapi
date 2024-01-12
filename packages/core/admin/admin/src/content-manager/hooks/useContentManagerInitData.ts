@@ -48,47 +48,47 @@ const useContentManagerInitData = () => {
 
   const state = useTypedSelector((state) => state['content-manager_app']);
 
-  const fetchInitialData = async () => {
-    const {
-      data: {
-        data: { components, contentTypes, fieldSizes },
+  const initialDataQuery = useQuery(
+    [...queryKeyPrefix, 'data'],
+    async () => {
+      const {
+        data: {
+          data: { components, contentTypes, fieldSizes },
+        },
+      } = await get<Contracts.Init.GetInitData.Response>('/content-manager/init');
+
+      return { components, contentTypes, fieldSizes };
+    },
+    {
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          toggleNotification({ type: 'warning', message: formatAPIError(error) });
+        } else {
+          toggleNotification({ type: 'warning', message: { id: 'notification.error' } });
+        }
       },
-    } = await get<Contracts.Init.GetInitData.Response>('/content-manager/init');
-
-    return { components, contentTypes, fieldSizes };
-  };
-
-  const fetchContentTypeSettings = async () => {
-    const {
-      data: { data: contentTypeConfigurations },
-    } = await get<Contracts.ContentTypes.FindContentTypesSettings.Response>(
-      '/content-manager/content-types-settings'
-    );
-
-    return contentTypeConfigurations;
-  };
-
-  const initialDataQuery = useQuery([...queryKeyPrefix, 'data'], fetchInitialData, {
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        toggleNotification({ type: 'warning', message: formatAPIError(error) });
-      } else {
-        toggleNotification({ type: 'warning', message: { id: 'notification.error' } });
-      }
-    },
-    onSuccess: () => {
-      notifyStatus(
-        formatMessage({
-          id: getTranslation('App.schemas.data-loaded'),
-          defaultMessage: 'The schemas have been successfully loaded.',
-        })
-      );
-    },
-  });
+      onSuccess: () => {
+        notifyStatus(
+          formatMessage({
+            id: getTranslation('App.schemas.data-loaded'),
+            defaultMessage: 'The schemas have been successfully loaded.',
+          })
+        );
+      },
+    }
+  );
 
   const contentTypeSettingsQuery = useQuery(
     [...queryKeyPrefix, 'contentTypeSettings'],
-    fetchContentTypeSettings,
+    async () => {
+      const {
+        data: { data: contentTypeConfigurations },
+      } = await get<Contracts.ContentTypes.FindContentTypesSettings.Response>(
+        '/content-manager/content-types-settings'
+      );
+
+      return contentTypeConfigurations;
+    },
     {
       onError: (error) => {
         if (error instanceof AxiosError) {
