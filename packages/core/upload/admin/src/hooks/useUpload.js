@@ -23,6 +23,9 @@ const uploadAsset = (asset, folderId, cancelToken, onProgress, post) => {
       caption,
       alternativeText,
       folder: folderId,
+      // DIGANDO START
+      focalPoint: asset.focalPoint ?? {}
+      // DIGANDO END
     })
   );
 
@@ -56,7 +59,7 @@ export const useUpload = () => {
     }
   );
 
-  const upload = (asset, folderId) => mutation.mutateAsync({ asset, folderId });
+  const upload = (asset, folderId) => mutation.mutateAsync({ asset, folderId, focalPoint: 'x:y' });
 
   const cancel = () =>
     tokenRef.current.cancel(
