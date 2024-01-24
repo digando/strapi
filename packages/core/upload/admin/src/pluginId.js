@@ -1,5 +1,3 @@
-import pluginPkg from '../../package.json';
-
-const pluginId = pluginPkg.name.replace(/^@strapi\/plugin-/i, '');
+const pluginId = 'upload';
 
 export default pluginId;
