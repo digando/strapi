@@ -1,6 +1,6 @@
 {
-  "name": "@strapi/plugin-upload",
-  "version": "4.17.1",
+  "name": "@digando/strapi-plugin-upload",
+  "version": "1.0.0",
   "description": "Makes it easy to upload images and files to your Strapi Application.",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
